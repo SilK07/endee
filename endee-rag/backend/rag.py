@@ -1,8 +1,11 @@
 from google import genai
 from sentence_transformers import SentenceTransformer
 from endee import Endee
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 from config import GEMINI_API_KEY
+import uuid
+from pypdf import PdfReader
+from docx import Document
 import uuid
 
 client_gemini = genai.Client(api_key=GEMINI_API_KEY)
@@ -84,4 +87,50 @@ Answer clearly and concisely.
 
     return {
         "answer": answer
+    }
+
+
+async def process_uploaded_file(file):
+    content = ""
+
+    if file.filename.endswith(".txt"):
+        content = (await file.read()).decode("utf-8")
+
+    elif file.filename.endswith(".pdf"):
+        reader = PdfReader(file.file)
+        for page in reader.pages:
+            content += page.extract_text() or ""
+
+    elif file.filename.endswith(".docx"):
+        doc = Document(file.file)
+        for para in doc.paragraphs:
+            content += para.text + "\n"
+
+    else:
+        return {"error": "Unsupported file type"}
+
+    # Chunk text
+    words = content.split()
+    chunks = [
+        " ".join(words[i:i+200])
+        for i in range(0, len(words), 200)
+    ]
+
+    vectors = []
+
+    for chunk in chunks:
+        vectors.append({
+            "id": str(uuid.uuid4()),
+            "vector": get_embedding(chunk),
+            "meta": {
+                "text": chunk,
+                "source": file.filename
+            }
+        })
+
+    DOC_INDEX.upsert(vectors)
+
+    return {
+        "message": f"{file.filename} uploaded and indexed successfully!",
+        "chunks_added": len(chunks)
     }
