@@ -4,4 +4,4 @@ sentence-transformers
 google
 python-dotenv
 endee 
-duckduckgo-search
+ddgs
