@@ -1,0 +1,7 @@
+fastapi[standard]
+uvicorn
+sentence-transformers
+google
+python-dotenv
+endee 
+duckduckgo-search
