@@ -65,17 +65,17 @@ The system:
 
   
 
-Frontend (React Chat UI)\
+Frontend (React Chat UI)
 
-↓\
+↓
 
-FastAPI Backend (/chat, /upload)\
+FastAPI Backend (/chat, /upload)
 
-↓\
+↓
 
-Endee Vector Database\
+Endee Vector Database
 
-↓\
+↓
 
 Gemini LLM
 
@@ -111,17 +111,17 @@ Each document chunk is stored as:
 
 {
 
-"id": "uuid",
+    "id": "uuid",
 
-"vector": [384-dimensional  embedding],
+    "vector": [384-dimensional  embedding],
 
-"meta": {
+    "meta": {
 
-"text": "chunk content",
+        "text": "chunk content",
 
-"source": "filename"
+        "source": "filename"
 
-}
+    }
 
 }
 
@@ -191,7 +191,7 @@ Create two indexes via dashboard:
 
   
 ```bash
-cd backend\
+cd backend
 python -m venv venv
 venv\Scripts\activate
 ```
@@ -259,9 +259,9 @@ Supported formats:
 
   
 
-- .txt\
+- .txt
 
-- .pdf\
+- .pdf
 
 - .docx
 
@@ -287,7 +287,7 @@ Body: { "message": "What is RAG?" }
   
 POST /upload
 
-Form-data: file: `<document>`{=html}
+Form-data: file: `<document>`
 ```
   
 ------------------------------------------------------------------------
